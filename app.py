@@ -8,6 +8,12 @@ redis = Redis(host="redis", db=0, socket_connect_timeout=2, socket_timeout=2)
 
 app = Flask(__name__)
 
+def parse_int(s, val=None):
+ if s.isdigit():
+  return int(s, 10)
+ else:
+  return val
+
 @app.route("/")
 def hello():
     try:
@@ -21,5 +27,5 @@ def hello():
     return html.format(name=os.getenv("NAME", "world"), hostname=socket.gethostname(), visits=visits)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=parse_int(os.getenv("PORT", 8080)))
 
